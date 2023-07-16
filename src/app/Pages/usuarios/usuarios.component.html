@@ -1,0 +1,175 @@
+<body class="container" [@fadeInOut]>
+    <br>
+    <h1>DUEÑOS</h1>
+
+    <div class="form-container mat-elevation-z8 main" *ngIf="!bMostrarDueno">
+        <h2>REGISTRAR DUEÑO</h2>
+        <form (ngSubmit)="submitForm()" class="section">
+            <div class="form-columns">
+                <div class="form-column">
+
+                    <mat-form-field>
+                        <mat-label>ID Tipo de Identificación</mat-label>
+                        <input matInput type="text" name="iIDTipoIdentificacion" [(ngModel)]="iIDTipoIdentificacion"
+                            title="ID Tipo de Identificación" placeholder="Ingrese el ID Tipo de Identificación"
+                            required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Primer Nombre</mat-label>
+                        <input matInput type="text" name="tPrimerNombre" [(ngModel)]="tPrimerNombre"
+                            title="Primer Nombre" placeholder="Ingrese el Primer Nombre" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Primer Apellido</mat-label>
+                        <input matInput type="text" name="tPrimerApellido" [(ngModel)]="tPrimerApellido"
+                            title="Primer Apellido" placeholder="Ingrese el Primer Apellido" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Número de Teléfono</mat-label>
+                        <input matInput type="text" name="tNumeroTelefono" [(ngModel)]="tNumeroTelefono"
+                            title="Número de Teléfono" placeholder="Ingrese el Número de Teléfono" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Correos</mat-label>
+                        <input matInput type="text" name="tCorreos" [(ngModel)]="tCorreos" title="Correos"
+                            placeholder="Ingrese los Correos" required>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-column">
+
+                    <mat-form-field>
+                        <mat-label>Número de Identificación</mat-label>
+                        <input matInput type="text" name="tNumeroIdentificacion" [(ngModel)]="tNumeroIdentificacion"
+                            title="Número de Identificación" placeholder="Ingrese el Número de Identificación" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Segundo Nombre</mat-label>
+                        <input matInput type="text" name="tSegundoNombre" [(ngModel)]="tSegundoNombre"
+                            title="Segundo Nombre" placeholder="Ingrese el Segundo Nombre">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Segundo Apellido</mat-label>
+                        <input matInput type="text" name="tSegundoApellido" [(ngModel)]="tSegundoApellido"
+                            title="Segundo Apellido" placeholder="Ingrese el Segundo Apellido">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Dirección</mat-label>
+                        <input matInput type="text" name="tDireccion" [(ngModel)]="tDireccion" title="Dirección"
+                            placeholder="Ingrese la Dirección" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" name="tContrasenna" [(ngModel)]="tContrasenna"
+                            title="Contraseña" placeholder="Ingrese la Contraseña" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <button mat-raised-button color="primary" type="submit" (click)="CrearDuenos">Registrar Dueño</button>
+        </form>
+    </div>
+
+    <div class="buttoms" *ngIf="!bMostrarDueno">
+        <!-- <button mat-raised-button color="primary">Agregar</button> -->
+        <button mat-raised-button color="primary" (click)="ConsultarDuenos()">Consultar</button>
+    </div>
+
+    <br>
+    <div class="example-container mat-elevation-z8" *ngIf="bMostrarDueno" [@fadeInOut]>
+        <mat-form-field>
+            <mat-label>Filter Product</mat-label>
+            <input matInput type="text" [(ngModel)]="filterValue" (blur)="filterProduct(filterValue)"
+                placeholder="Search product name" />
+        </mat-form-field>
+        <div class="spinner-container" *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <mat-table #table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="iIDTipoIdentificacion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ID Tipo de Identificación</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.iIDTipoIdentificacion }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tNumeroIdentificacion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Número de Identificación</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tNumeroIdentificacion }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tPrimerNombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Primer Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tPrimerNombre }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tSegundoNombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Segundo Nombre</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tSegundoNombre }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tPrimerApellido">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Primer Apellido</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tPrimerApellido }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tSegundoApellido">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Segundo Apellido</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tSegundoApellido }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tNumeroTelefono">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Número de Teléfono</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tNumeroTelefono }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tDireccion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Dirección</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tDireccion }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tCorreos">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Correos</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tCorreos }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tContrasenna">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Contraseña</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.tContrasenna }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Edit</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                        (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="delete(element.id)"
+                        color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+</body>

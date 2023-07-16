@@ -1,0 +1,137 @@
+<body class="container" [@fadeInOut]>
+    <br>
+    <h1>MASCOTAS</h1>
+
+    <div class="form-container mat-elevation-z8 main" *ngIf="!boMostrarMascota" >
+        <h2>REGISTRAR MASCOTA</h2>
+        <form (ngSubmit)="submitForm()" class="section">
+
+            <mat-form-field>
+                <mat-label>Nombre de mascota</mat-label>
+                <input matInput type="text" name="nombreMascota" [(ngModel)]="tNombreMascota" title="Nombre de mascota"
+                    placeholder="Ingrese el nombre de la mascota" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Especie</mat-label>
+                <input matInput type="text" name="especie" [(ngModel)]="tEspecie" title="Especie"
+                    placeholder="Ingrese la especie de la mascota" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Raza</mat-label>
+                <input matInput type="text" name="raza" [(ngModel)]="tRaza" title="Raza"
+                    placeholder="Ingrese la raza de la mascota" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Fecha de Nacimiento</mat-label>
+                <input matInput type="text" name="raza" [(ngModel)]="dtFechaNacimiento" title="Raza"
+                    placeholder="Ingrese la fecha de nacimiento de la mascota" required>
+            </mat-form-field>
+
+            <!-- <mat-form-field>
+                <mat-label>ID Usuario</mat-label>
+                <input matInput type="text" name="idMascota" [(ngModel)]="idMascota" title="ID de mascota"
+                    placeholder="Ingrese el ID de la mascota" required>
+            </mat-form-field> -->
+
+            <mat-form-field>
+                <mat-label>Dueño</mat-label>
+                <mat-select [(ngModel)]="iIDMascota" name="IdDueno" required title="Seleccione un dueño">
+                  <mat-option *ngFor="let dueno of duenos" [value]="dueno.iIDMascota">{{ dueno.tNombreMascota }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+        </form>
+        <button mat-raised-button color="primary" type="submit" *ngIf="boActualizarMascota" (click)="CrearMascota()">Actualizar Mascota</button>
+        <button mat-raised-button color="primary" type="submit" *ngIf="!boActualizarMascota" (click)="CrearMascota()">Registrar Mascota</button>
+    </div>
+
+    <div class="buttoms" *ngIf="!boMostrarMascota">
+        <!-- <button mat-raised-button color="primary">Agregar</button> -->
+        <button mat-raised-button color="primary" (click)="ConsultarMascota()">Consultar</button>
+    </div>
+    <br>
+
+    <div class="example-container mat-elevation-z8" *ngIf="boMostrarMascota" [@fadeInOut]>
+        <mat-form-field>
+            <mat-label>Filter Product</mat-label>
+            <input matInput type="text" [(ngModel)]="filterValue" (blur)="filterProduct(filterValue)"
+                placeholder="Search product name" />
+        </mat-form-field>
+        <div class="spinner-container" *ngIf=isLoading>
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="iIDMascota">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> IDMascota </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.iIDMascota}} </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="tNombreMascota">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Nombre Mascota
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.tNombreMascota}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tEspecie">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Especie
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div class="form-group">
+                        <a target="_blank" (click)="onNavigate(element.productCode)"
+                            href="#">{{element.tEspecie}}</a>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="tRaza">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Raza
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.tRaza }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dtFechaNacimiento">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Raza
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dtFechaNacimiento }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Edit
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                        (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Delete
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="delete(element)"
+                        color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+</body>

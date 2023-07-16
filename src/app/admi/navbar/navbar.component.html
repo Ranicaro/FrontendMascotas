@@ -1,0 +1,33 @@
+<mat-sidenav-container>
+
+	<mat-sidenav #sidenav mode="over">
+		<label>Mi Mascota</label> 
+    <hr/>   
+		<nav>
+			<!-- <a routerLink="home"      (click)="clickHandler()" routerLinkActive="active">Home</a>
+			<a routerLink="about"     (click)="clickHandler()" routerLinkActive="active">About</a> -->
+			<a routerLink="login"     (click)="clickHandler()" routerLinkActive="active">Login</a>
+			<a routerLink="usuario"   (click)="clickHandler()" routerLinkActive="active">Dueño</a>
+			<a routerLink="mascota"   (click)="clickHandler()" routerLinkActive="active">Mascotas</a>
+		</nav>
+	</mat-sidenav>
+
+	<mat-sidenav-content>
+		<mat-toolbar color="primary">
+			<header>
+				<mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+				<label>Mi Mascota</label>        
+        <nav>
+          <!-- <a routerLink="home"    routerLinkActive="active">Home</a>
+          <a routerLink="about"   routerLinkActive="active">About</a> -->
+          <a routerLink="login"   routerLinkActive="active">Login</a>
+          <a routerLink="usuario" routerLinkActive="active">Dueño</a>
+          <a routerLink="mascota" routerLinkActive="active">Mascota</a>
+        </nav>        
+      </header>
+		</mat-toolbar>
+    <section>
+      <router-outlet></router-outlet>
+    </section>
+  </mat-sidenav-content>
+</mat-sidenav-container>

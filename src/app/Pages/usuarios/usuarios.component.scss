@@ -1,0 +1,190 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+hr {
+    height: 2px;
+    background-color: #000;
+    border: none;
+    margin: 20px 0;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    border-radius: 10px;
+}
+
+.form-container {
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: center;
+    margin: auto;
+    box-sizing: border-box;
+    // overflow: hidden;
+}
+
+.form-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+.form-container form mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-columns {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -8px;
+}
+
+.form-column {
+    flex-basis: 50%;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+
+
+
+/////////////////////////////////////////// Tabla
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.fixed {
+    table-layout: fixed;
+}
+
+.square {
+    height: 200px;
+    width: 200px;
+    background-color: #E0E0E0;
+    border: 2px solid;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.mat-table {
+    overflow: auto;
+    font-family: "Open Sans", sans-serif
+}
+
+.mat-header-cell.mat-sort-header-sorted {
+    color: black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: navy;
+    font-weight: normal;
+    align-items: center;
+}
+
+.mat-cell:nth-child(4),
+.mat-header-cell:nth-child(4) {
+    flex: 0 0 40px;
+}
+
+.mat-cell:nth-child(5),
+.mat-header-cell:nth-child(5) {
+    flex: 0 0 40px;
+}
+
+.mat-sort-header-container {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+:host ::ng-deep.mat-paginator .mat-paginator-container {
+    justify-content: flex-start !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 46px !important;
+    padding: 0 8px;
+    flex-wrap: wrap-reverse;
+    width: 100%;
+    font-size: 14px !important;
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.btn {
+    text-transform: none;
+}
+
+.mat-sort-header-button {
+    font-size: larger !important;
+    font-weight: bold !important;
+
+}
+
+@media (max-width: 600px) {
+    .form-column {
+        flex-basis: 100%;
+        padding: 0;
+    }
+}
+
+.buttoms {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+
+button {
+    margin-right: 10px;
+}
+
+button:last-child {
+    margin-right: 0;
+}
+
+:root {
+    --success-color: #198754;
+    --delete-color: #dc3545;
+}
+
+::ng-deep.green-snackbar {
+    background: #1a8e58;
+    color: rgb(241, 240, 240);
+}
+
+// .red-snackbar {
+//     background: #BA0000;
+//     color: rgb(241, 240, 240);
+// }
+
+.red-snackbar {
+    max-width: max-content !important;
+    color: white;
+    --mdc-snackbar-container-color: var(--delete-color);
+    border-color: #f5c6cb;
+
+    .mat-simple-snackbar-action {
+        color: white;
+    }
+}
