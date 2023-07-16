@@ -27,6 +27,8 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     MatSelectModule,
     MatSnackBarModule,
-    HttpClientModule 
+    HttpClientModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

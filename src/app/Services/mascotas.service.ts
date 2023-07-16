@@ -6,8 +6,6 @@ import { Injectable } from '@angular/core';
 })
 export class MascotasService {
 
-  private apiUrl = 'https://api.example.com/mascotas'; // Reemplaza con la URL de tu API
-
   constructor(private http: HttpClient) { }
 
   getAllMascotas() {
@@ -24,17 +22,12 @@ export class MascotasService {
     return this.http.post<any>("https://localhost:44334/PostCrearMascota", nuevaMascota);
   }
 
-  updateMascota(id: number, mascota: any) {
-    const url = `${"https://localhost:7187/PutEditarMascota"}/${id}`;
-    return this.http.put<any>("https://localhost:44334/PutEditarMascota", mascota);
+  updateMascota(iIDMascota: number | null | undefined, mascota: any) {
+    const url = `${"https://localhost:7187/PutEditarMascota"}/${iIDMascota}`;
+    return this.http.put<any>("https://localhost:7187/PutEditarMascota", mascota);
   }
 
-  // deleteMascota(iIDMascota: number | null | undefined) {
-  //   const url = `${"https://localhost:7187/DeleteEliminarMascota"}/${iIDMascota}`;
-  //   return this.http.delete<any>("https://localhost:7187/DeleteEliminarMascota");
-  // }
-
-  deleteMascota(mascota: Product) {
+  deleteMascota(mascota: Mascota) {
     const url = `${"https://localhost:7187/DeleteEliminarMascota"}/${mascota.iIDMascota}`;
     return this.http.delete<any>("https://localhost:44334/DeleteEliminarMascota", { body: mascota });
   }
@@ -42,17 +35,18 @@ export class MascotasService {
 }
 
 
-export interface Product {
+export interface Mascota {
   iIDMascota?: number | null;
   tNombreMascota: string;
   tEspecie: string;
   tRaza?: string;
   dtFechaNacimiento?: string;
   iIDDuenno?: number,
-  iIDUsuarioCreacion?: number
+  iIDUsuarioCreacion?: number,
+  iIDUsuarioModificacion?: number
 }
 
-export const products: Product[] = [
+export const products: Mascota[] = [
   {
     iIDMascota: 1,
     tNombreMascota: 'Netgear Cable Modem',
@@ -116,5 +110,4 @@ export const products: Product[] = [
     tRaza: 'TP Link Cable Modem compatible with all cables',
     dtFechaNacimiento: '4.2'
   },
-  // Añade el resto de los elementos
 ];

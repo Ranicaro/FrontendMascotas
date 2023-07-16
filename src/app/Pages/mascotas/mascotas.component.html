@@ -26,25 +26,21 @@
 
             <mat-form-field>
                 <mat-label>Fecha de Nacimiento</mat-label>
-                <input matInput type="text" name="raza" [(ngModel)]="dtFechaNacimiento" title="Raza"
-                    placeholder="Ingrese la fecha de nacimiento de la mascota" required>
-            </mat-form-field>
-
-            <!-- <mat-form-field>
-                <mat-label>ID Usuario</mat-label>
-                <input matInput type="text" name="idMascota" [(ngModel)]="idMascota" title="ID de mascota"
-                    placeholder="Ingrese el ID de la mascota" required>
-            </mat-form-field> -->
+                <input matInput [matDatepicker]="picker" [(ngModel)]="dtFechaNacimiento" name="fechadenacimiento"
+                  placeholder="Ingrese la fecha de nacimiento de la mascota" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Dueño</mat-label>
-                <mat-select [(ngModel)]="iIDMascota" name="IdDueno" required title="Seleccione un dueño">
-                  <mat-option *ngFor="let dueno of duenos" [value]="dueno.iIDMascota">{{ dueno.tNombreMascota }}</mat-option>
+                <mat-select [(ngModel)]="iIDUsuario" name="IdDueno" required title="Seleccione un dueño">
+                  <mat-option *ngFor="let dueno of duenos" [value]="dueno.iIDUsuario">{{ dueno.tPrimerNombre }}</mat-option>
                 </mat-select>
               </mat-form-field>
 
         </form>
-        <button mat-raised-button color="primary" type="submit" *ngIf="boActualizarMascota" (click)="CrearMascota()">Actualizar Mascota</button>
+        <button mat-raised-button color="primary" type="submit" *ngIf="boActualizarMascota" (click)="ActualizarMascota()">Actualizar Mascota</button>
         <button mat-raised-button color="primary" type="submit" *ngIf="!boActualizarMascota" (click)="CrearMascota()">Registrar Mascota</button>
     </div>
 
@@ -99,9 +95,16 @@
 
             <ng-container matColumnDef="dtFechaNacimiento">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                    Raza
+                    Fecha de Nacimiento
                 </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.dtFechaNacimiento }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="iIDDuenno">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Dueño
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.tNombreDuenno }} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="edit">

@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { Product, products } from '../../Services/usuarios.service';
+import { Duennos, duennos } from '../../Services/usuarios.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -42,7 +42,7 @@ export class UsuariosComponent {
   filterValue = '';
   isLoading = false;
   data: any[] = [];
-  products: Product[] = products;
+  products: Duennos[] = duennos;
 
   iIDTipoIdentificacion: number | null = null;
   tNumeroIdentificacion = '';
@@ -72,7 +72,6 @@ export class UsuariosComponent {
   }
 
   submitForm() {
-    // Validar el formulario
     if (
       !this.iIDTipoIdentificacion ||
       !this.tNumeroIdentificacion ||
@@ -83,12 +82,11 @@ export class UsuariosComponent {
       !this.tCorreos ||
       !this.tContrasenna
     ) {
-      // Algún campo obligatorio está vacío, mostrar mensaje de error o realizar alguna acción
       return;
     }
 
-    // Crear un objeto con los datos del formulario
-    const nuevousuario: Product = {
+    const nuevousuario: Duennos = {
+      iIDUsuario: 1,
       iIDTipoIdentificacion: this.iIDTipoIdentificacion,
       tNumeroIdentificacion: this.tNumeroIdentificacion,
       tPrimerNombre: this.tPrimerNombre,
@@ -101,13 +99,10 @@ export class UsuariosComponent {
       tContrasenna: this.tContrasenna
     };
 
-    // Agregar el nuevo objeto a la lista de datos
     this.products.push(nuevousuario);
 
-    // Actualizar la fuente de datos de la tabla
     this.dataSource.data = this.products;
 
-    // Limpiar los campos del formulario
     this.iIDTipoIdentificacion = null;
     this.tNumeroIdentificacion = '';
     this.tPrimerNombre = '';
@@ -122,7 +117,8 @@ export class UsuariosComponent {
 
   ConsultarDuenos() {
 
-    const consultarusuario: Product = {
+    const consultarusuario: Duennos = {
+      iIDUsuario: 1,
       iIDTipoIdentificacion: this.iIDTipoIdentificacion,
       tNumeroIdentificacion: this.tNumeroIdentificacion,
       tPrimerNombre: this.tPrimerNombre,
@@ -154,7 +150,6 @@ export class UsuariosComponent {
     ).subscribe(
       (response) => {
         response
-        //this.bMostrarDueno = true;
         this._snackBar.open("Se obtuvo resultados", "X", {
           duration: 5000,
           horizontalPosition: "right",
@@ -187,7 +182,8 @@ export class UsuariosComponent {
       return;
     }
 
-    const crearusuario: Product = {
+    const crearusuario: Duennos = {
+      iIDUsuario: 1,
       iIDTipoIdentificacion: this.iIDTipoIdentificacion,
       tNumeroIdentificacion: this.tNumeroIdentificacion,
       tPrimerNombre: this.tPrimerNombre,
@@ -218,7 +214,6 @@ export class UsuariosComponent {
     ).subscribe(
       (response) => {
         response
-        //this.bMostrarDueno = true;
         this._snackBar.open("Se creo el usuario", "X", {
           duration: 5000,
           horizontalPosition: "right",
@@ -254,7 +249,6 @@ export class UsuariosComponent {
     ).subscribe(
       (response) => {
         response
-        //this.bMostrarDueno = true;
         this._snackBar.open("Se inhabilito el registro del usuario", "X", {
           duration: 5000,
           horizontalPosition: "right",
@@ -274,6 +268,6 @@ export class UsuariosComponent {
   }
 
   onNavigate(productCode: string) {
-    // Lógica para la navegación a través del productCode
+
   }
 }

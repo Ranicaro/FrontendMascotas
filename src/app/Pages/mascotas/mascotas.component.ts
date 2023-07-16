@@ -1,12 +1,12 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { Product, products } from '../../Services/mascotas.service';
+import { Mascota, products } from '../../Services/mascotas.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MascotasService } from '../../Services/mascotas.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { UsuariosService } from 'src/app/Services/usuarios.service';
+import { Duennos, UsuariosService } from 'src/app/Services/usuarios.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -25,20 +25,21 @@ import { throwError } from 'rxjs';
 
 export class MascotasComponent implements OnInit {
 
-  dataSource!: MatTableDataSource<Product>;
-  displayedColumns: string[] = ['iIDMascota', 'tNombreMascota', 'tEspecie', 'tRaza', 'dtFechaNacimiento', 'edit', 'delete'];
+  dataSource!: MatTableDataSource<Mascota>;
+  displayedColumns: string[] = ['iIDMascota', 'tNombreMascota', 'tEspecie', 'tRaza', 'dtFechaNacimiento', 'iIDDuenno','edit', 'delete'];
   filterValue!: string;
   isLoading: boolean = false;
-  products: Product[] = products;
+  products: Mascota[] = products;
 
+  idMascota?: number | null;
   iIDMascota?: number;
+  iIDUsuario?: number;
   tNombreMascota: string = '';
   tEspecie: string = '';
   tRaza: string = '';
   dtFechaNacimiento : string = '';
-
-  ////// cambiar el modelo cuando este el servicio
-  duenos: Product[] = [];
+  duenos: Duennos[] = [];
+  mascotaSeleccionada: Mascota | null = null;
 
   boMostrarMascota: boolean = false;
   boActualizarMascota: boolean = false;
@@ -48,17 +49,16 @@ export class MascotasComponent implements OnInit {
 
   constructor(
     private _snackBar: MatSnackBar,
-    public mascotaService: MascotasService
+    public mascotaService: MascotasService,
+    public usuarioService: UsuariosService
   ) { }
 
   submitForm() {
-    // Validar el formulario
     if ( !this.tNombreMascota || !this.tEspecie || !this.tRaza) {
-      // Algún campo obligatorio está vacío, mostrar mensaje de error o realizar alguna acción
       return;
     }
 
-    const nuevaMascota: Product = {
+    const nuevaMascota: Mascota = {
       iIDMascota: this.iIDMascota,
       tNombreMascota: this.tNombreMascota,
       tEspecie: this.tEspecie,
@@ -77,15 +77,10 @@ export class MascotasComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Obtén los datos de tu archivo "product.ts" y asígnalos a la fuente de datos
     this.dataSource = new MatTableDataSource(this.products);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-
-
-    // select
-    this.mascotaService.getAllMascotas().subscribe(x => this.duenos = x);
-    this.duenos = this.products;
+    this.usuarioService.getAllUsuarios().subscribe(x => this.duenos = x);
   }
 
   ConsultarMascota() {
@@ -121,19 +116,76 @@ export class MascotasComponent implements OnInit {
   }
 
   CrearMascota() {
+    
+    if ( !this.tNombreMascota || !this.tEspecie || !this.tRaza || !this.iIDUsuario || !this.dtFechaNacimiento ) {
+      this._snackBar.open("Porfavor ingrese todos los campos", "X", {
+        duration: 5000,
+        horizontalPosition: "right",
+        verticalPosition: "top",
+        panelClass: ['red-snackbar']
+      });
+      return;
+    }
+    
 
-    const nuevaMascota: Product = {
+    const nuevaMascota: Mascota = {
       tNombreMascota: this.tNombreMascota,
       tEspecie: this.tEspecie,
       tRaza: this.tRaza,
-      iIDDuenno : this.iIDMascota,
-      iIDUsuarioCreacion :1
+      iIDDuenno : this.iIDUsuario,
+      dtFechaNacimiento:this.dtFechaNacimiento,
+      iIDUsuarioCreacion : this.iIDUsuario
     };
+
 
     this.mascotaService.createMascota(nuevaMascota).pipe(
       catchError(error => {
         const errorCode = error?.status || 'Desconocido';
-        let errorMessage = `Ocurrió un error en la consulta. Código: ${errorCode}`;
+        let errorMessage = `Código: ${errorCode}`;
+        if (errorCode === 400) {
+          errorMessage = `Por favor verifique los datos ingresados. Código: ${errorCode}`;
+        }
+
+        this._snackBar.open(errorMessage, "X", {
+          duration: 5000,
+          horizontalPosition: "right",
+          verticalPosition: "top",
+          panelClass: ['red-snackbar']
+        });
+        return throwError(() => new Error(error));;
+      })
+    ).subscribe(
+      (response) => {
+        response
+        this.boMostrarMascota = true
+        this.dataSource.data = response;
+        this._snackBar.open("Se creo la mascota", "X", {
+          duration: 5000,
+          horizontalPosition: "right",
+          verticalPosition: "top",
+          panelClass: ['green-snackbar']
+        });
+      }
+    );
+
+  }
+
+  ActualizarMascota(){
+
+    const modificarMascota: Mascota = {
+      iIDMascota: this.idMascota,
+      tNombreMascota: this.tNombreMascota,
+      tEspecie: this.tEspecie,
+      tRaza: this.tRaza,
+      iIDDuenno : this.iIDUsuario,
+      dtFechaNacimiento:this.dtFechaNacimiento,
+      iIDUsuarioModificacion: 1
+    };
+
+    this.mascotaService.updateMascota(this.idMascota,modificarMascota).pipe(
+      catchError(error => {
+        const errorCode = error?.status || 'Desconocido';
+        let errorMessage = `Código: ${errorCode}`;
         if (errorCode === 400) {
           errorMessage = `Por favor verifique los datos ingresados. Código: ${errorCode}`;
         }
@@ -150,7 +202,7 @@ export class MascotasComponent implements OnInit {
         response
         this.boMostrarMascota = true
         this.dataSource.data = response;
-        this._snackBar.open("Se obtuvo resultados", "X", {
+        this._snackBar.open("Se actualizo la mascota", "X", {
           duration: 5000,
           horizontalPosition: "right",
           verticalPosition: "top",
@@ -158,12 +210,11 @@ export class MascotasComponent implements OnInit {
         });
       }
     );
-
   }
 
-  edit(mascotaid: Product) {
-    const idMascota = mascotaid.iIDMascota
-    this.mascotaService.getMascotaById(idMascota).pipe(
+  edit(mascotaid: Mascota) {
+    this.idMascota = mascotaid.iIDMascota
+    this.mascotaService.getMascotaById(this.idMascota).pipe(
       catchError(error => {
         const errorCode = error?.status || 'Desconocido';
         let errorMessage = `Ocurrió un error en la consulta. Código: ${errorCode}`;
@@ -202,14 +253,13 @@ export class MascotasComponent implements OnInit {
     );
   }
 
-  delete(mascotaid: Product) {
+  delete(mascotaid: Mascota) {
     console.log(mascotaid)
-    //this.boMostrarMascota = true;
     const idMascota = mascotaid.iIDMascota
     this.mascotaService.deleteMascota(mascotaid).pipe(
       catchError(error => {
         const errorCode = error?.status || 'Desconocido';
-        let errorMessage = `Ocurrió un error. Código: ${errorCode}`;
+        let errorMessage = `Código: ${errorCode}`;
         if (errorCode === 400) {
           errorMessage = `Por favor verifique los datos ingresados. Código: ${errorCode}`;
         }
@@ -239,8 +289,12 @@ export class MascotasComponent implements OnInit {
     this.dataSource.filter = value.trim().toLowerCase();
   }
 
-  onNavigate(productCode: string) {
-    // Lógica para la navegación a través del productCode
+  applyFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  }
+
+  onNavigate(NombreMascota: string) {
+
   }
 
 
