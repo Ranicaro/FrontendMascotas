@@ -11,22 +11,22 @@ export class MascotasService {
   constructor(private http: HttpClient) { }
 
   getAllMascotas() {
-    return this.http.get<any[]>("https://localhost:7187/GetListarMascotas");
+    return this.http.get<any[]>("https://localhost:44334/GetListarMascotas");
   }
 
   getMascotaById(iIDMascota: number | null | undefined) {
-    return this.http.post<any>("https://localhost:7187/PostListarMascotasId", {
+    return this.http.post<any>("https://localhost:44334/PostListarMascotasId", {
       "iIDMascota": iIDMascota
     });
   }
 
   createMascota(nuevaMascota: any) {
-    return this.http.post<any>("https://localhost:7187/PostCrearMascota", nuevaMascota);
+    return this.http.post<any>("https://localhost:44334/PostCrearMascota", nuevaMascota);
   }
 
   updateMascota(id: number, mascota: any) {
     const url = `${"https://localhost:7187/PutEditarMascota"}/${id}`;
-    return this.http.put<any>("https://localhost:7187/PutEditarMascota", mascota);
+    return this.http.put<any>("https://localhost:44334/PutEditarMascota", mascota);
   }
 
   // deleteMascota(iIDMascota: number | null | undefined) {
@@ -36,7 +36,7 @@ export class MascotasService {
 
   deleteMascota(mascota: Product) {
     const url = `${"https://localhost:7187/DeleteEliminarMascota"}/${mascota.iIDMascota}`;
-    return this.http.delete<any>("https://localhost:7187/DeleteEliminarMascota", { body: mascota });
+    return this.http.delete<any>("https://localhost:44334/DeleteEliminarMascota", { body: mascota });
   }
 
 }
