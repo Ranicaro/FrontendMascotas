@@ -11,7 +11,7 @@ export class UsuariosService {
   constructor(private http: HttpClient) { }
 
   getAllUsuarios() {
-    return this.http.get<any[]>("https://localhost:7187/GetListarUsuarios");
+    return this.http.get<any[]>("https://localhost:44334/GetListarUsuarios");
   }
 
   getUsuarioById(id: number) {
@@ -20,7 +20,7 @@ export class UsuariosService {
   }
 
   createUsuario(crearUsuario: Duennos) {
-    return this.http.post<any>("https://localhost:7187/PostCrearUsuarios", crearUsuario);
+    return this.http.post<any>("https://localhost:44334/PostCrearUsuarios", crearUsuario);
   }
 
   updateUsuario(id: number, usuario: any) {

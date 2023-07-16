@@ -23,8 +23,8 @@ export class MascotasService {
   }
 
   updateMascota(iIDMascota: number | null | undefined, mascota: any) {
-    const url = `${"https://localhost:7187/PutEditarMascota"}/${iIDMascota}`;
-    return this.http.put<any>("https://localhost:7187/PutEditarMascota", mascota);
+    const url = `${"https://localhost:44334/PutEditarMascota"}/${iIDMascota}`;
+    return this.http.put<any>("https://localhost:44334/PutEditarMascota", mascota);
   }
 
   deleteMascota(mascota: Mascota) {
